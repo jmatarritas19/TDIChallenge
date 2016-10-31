@@ -1,0 +1,37 @@
+---
+title: "TDI NYC taxi data"
+author: "Julio Matarrita"
+date: "October 31, 2016"
+output: html_document
+---
+
+Activate packages
+
+```{r}
+library("data.table")
+library("dplyr")
+library("ggmap")
+```
+
+Set working directory
+
+```{r}
+setwd("C:/Users/Usuario/Desktop/TDIC/Data")
+```
+
+# Import dataset with the different stations.
+
+```{r}
+DF <- tbl_df(fread("StartStations.csv"))
+
+```
+
+Map of the differents NYC bike stops
+
+```{r}
+map <- get_map(location = 'New York', zoom = 12, maptype = "terrain")
+bikestations <- ggmap(map) + geom_point(data=DF, aes(x=DF$`start station longitude`, y=DF$`start station latitude`),alpha = 0.6, show_guide = FALSE, size=2)
+bikestations
+```
+
+In the past map is possible see that the bike stations are available in all New York City and can be a good medium to move when visit new york as tourist.

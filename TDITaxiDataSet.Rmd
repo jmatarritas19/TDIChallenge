@@ -1,0 +1,40 @@
+---
+title: "The DI Challenge"
+author: "Julio Matarrita"
+date: "October 31, 2016"
+output: html_document
+---
+*New York City taxi Transportation Analysis*
+
+*Analysis 1*
+
+```{r, echo=False}
+setwd("C:\\Users\\Usuario\\OneDrive\\UCONN\\Fall 2016\\Capstone\\Data")
+library(corrplot)
+```
+
+**Reading and cleaning the data**
+```{r}
+TripFareJoin1.0 <- read.csv("trip_fare_join_100.csv") 
+```
+
+```{r}
+TripFareJoin1.1 <- subset(TripFareJoin1.0,select=-c(medallion_copy,hack_license_copy,vendor_id_copy,pickup_datetime_copy))
+TripFareJoin1.1$rate_id <- as.factor(TripFareJoin1.1$rate_id)
+TripFareJoin1.1$passenger_count <- as.numeric(TripFareJoin1.1$passenger_count)
+TripFareJoin1.1$trip_time_in_secs <- as.numeric(TripFareJoin1.1$trip_time_in_secs)
+TripFareJoin1.1$trip_distance <- as.numeric(TripFareJoin1.1$trip_distance)
+
+TripFareJoin1.1n <- subset(TripFareJoin1.1,select = c(passenger_count,trip_time_in_secs,trip_distance,fare_amount,fare_surcharge,mta_tax,tip_amount,toll_amount,total_amount))
+```
+
+```{r}
+summary(TripFareJoin1.1)
+```
+
+```{r}
+correlation <- cor(TripFareJoin1.1n)
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(correlation, method="shade", shade.col=NA, tl.col="black", tl.srt=45, col=col(200), addCoef.col="black", order="AOE")
+```
+
